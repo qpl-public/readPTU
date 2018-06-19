@@ -27,6 +27,7 @@
 
 // How big the file chunking will be
 #define RECORD_CHUNK 1024*8 // 1024*8 gives the best results on Guillem laptop
+#define MAX_RING_BUF 4096
 
 int c_fseek(FILE *filehandle, long int offset)
 {
@@ -45,7 +46,7 @@ static inline void load_buffer(uint32_t *pbuffer, FILE *fhandle)
 
 static inline void check_and_grow_buf(ring_buf_t *cbuf, uint64_t timetag,
                                       uint64_t correlation_window) {
-    if ( (timetag-ring_buf_oldest(cbuf)) < correlation_window && cbuf->count == cbuf->size && cbuf->size < 256) {
+    if ( (timetag-ring_buf_oldest(cbuf)) < correlation_window && cbuf->count == cbuf->size && cbuf->size < MAX_RING_BUF) {
         ring_buf_grow(cbuf);
     }
 }
