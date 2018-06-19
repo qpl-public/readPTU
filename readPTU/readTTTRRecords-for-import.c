@@ -46,7 +46,6 @@ static inline void load_buffer(uint32_t *pbuffer, FILE *fhandle)
 static inline void check_and_grow_buf(ring_buf_t *cbuf, uint64_t timetag,
                                       uint64_t correlation_window) {
     if ( (timetag-ring_buf_oldest(cbuf)) < correlation_window && cbuf->count == cbuf->size && cbuf->size < 256) {
-        printf("Shouldnt be here\n");
         ring_buf_grow(cbuf);
     }
 }

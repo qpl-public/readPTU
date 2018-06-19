@@ -146,4 +146,5 @@ uint64_t pop(node_t * head, int* length) {
 // END OF CHAINED LIST BUFFER
 // ============================
 
+
 #endif /* BUFFERS_C_ */
