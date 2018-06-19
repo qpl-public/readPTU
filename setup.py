@@ -18,7 +18,7 @@ import setuptools  # necessary magic import for windows -- don't think, just acc
 
 
 def compile_library():
-    parsers = ['HHT2_HH1', 'HHT2_HH2', 'PHT2']
+    parsers = ['HHT2_HH1', 'HHT2_HH2', 'PHT2', 'QPL']
 
     with open('./readPTU/readTTTRRecords-for-import.c', 'r') as myfile:
         c_code = myfile.read()

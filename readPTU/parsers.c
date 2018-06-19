@@ -4,6 +4,31 @@
 static inline void ParsePHT2(uint32_t record, int * channel, uint64_t * timetag, uint64_t * oflcorrection);
 static inline void ParseHHT2_HH1(uint32_t record, int * channel, uint64_t * timetag, uint64_t * oflcorrection);
 static inline void ParseHHT2_HH2(uint32_t record, int * channel, uint64_t * timetag, uint64_t * oflcorrection);
+static inline void ParseQPL(uint32_t record, int * channel, uint64_t * timetag, uint64_t * oflcorrection);
+
+static inline void ParseQPL(uint32_t record, int * channel,
+              uint64_t * timetag, uint64_t * oflcorrection)
+{
+    const uint64_t QPLWRAPAROUND = 134217728;
+    union{
+        uint32_t allbits;
+        struct{
+            unsigned timetag :27;
+            unsigned channel :4;
+            unsigned special :1;
+        } bits;
+    } QPLRec;
+
+    QPLRec.allbits = record;
+
+    unsigned tm = QPLRec.bits.timetag;
+    unsigned ch = QPLRec.bits.channel;
+    unsigned sp = QPLRec.bits.special;
+
+    *oflcorrection += QPLWRAPAROUND * tm * sp;
+    *channel = ch  - sp * 32; // negative channel == overflow
+    *timetag = (*oflcorrection + tm) * (1-sp); // if overflow timetag is 0
+}
 
 static inline void ParsePHT2(uint32_t record, int * channel,
                              uint64_t * timetag, uint64_t * oflcorrection)
